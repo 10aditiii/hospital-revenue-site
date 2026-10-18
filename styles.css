@@ -1,0 +1,96 @@
+/* Layout: one centered ledger; each country is a row that opens into its hospital breakdown */
+:root{
+  --bg:#f3f6f6; --surface:#ffffff; --fg:#14211f; --muted:#5d6b69; --line:#d9e2e0;
+  --accent:#0f6e66; --accent-soft:#e0efec; --rev:#0f6e66; --cost:#b5603a; --cost-soft:#f6e6dd;
+  --gain:#1f7a3f; --loss:#b23a3a;
+  --f-display:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1716; --surface:#16211f; --fg:#e4eeec; --muted:#93a4a1; --line:#2a3836;
+  --accent:#4fbfb2; --accent-soft:#1c3330; --rev:#4fbfb2; --cost:#e2946c; --cost-soft:#3a2a22;
+  --gain:#6ccf8b; --loss:#f08a8a; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0f1716; --surface:#16211f; --fg:#e4eeec; --muted:#93a4a1; --line:#2a3836;
+  --accent:#4fbfb2; --accent-soft:#1c3330; --rev:#4fbfb2; --cost:#e2946c; --cost-soft:#3a2a22;
+  --gain:#6ccf8b; --loss:#f08a8a; color-scheme:dark;}
+
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding-block:40px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:grid;gap:24px}
+header{display:grid;gap:6px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--f-display);font-size:clamp(26px,4.5vw,36px);font-weight:800;margin:0;letter-spacing:-.02em;text-wrap:balance}
+.sub{color:var(--muted);margin:0;max-width:60ch}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+.ledger{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.row-head,.country>button,.total{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr) 28px;gap:12px;align-items:center;padding:14px 20px}
+.row-head{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line)}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums;text-align:right}
+.country{border-bottom:1px solid var(--line)}
+.country>button{width:100%;background:none;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer;padding-block:18px}
+.country>button:hover{background:var(--accent-soft)}
+.country>button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.cname{font-weight:700;font-size:17px;display:flex;align-items:center;gap:10px;min-width:0}
+.code{font-family:var(--f-num);font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-weight:500}
+.rev{color:var(--rev);font-weight:500}
+.cost{color:var(--cost);font-weight:500}
+.chev{justify-self:end;width:18px;height:18px;color:var(--muted);transition:transform .2s}
+.country.open .chev{transform:rotate(90deg);color:var(--accent)}
+.country.open>button{background:var(--accent-soft)}
+
+.detail{padding:4px 20px 22px;display:grid;gap:16px;background:var(--accent-soft)}
+.summary{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+.chip b{font-family:var(--f-num);font-weight:500}
+.chip.gain b{color:var(--gain)} .chip.loss b{color:var(--loss)}
+.tablebox{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px}
+th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:left;font-weight:700}
+th.num{text-align:right}
+tbody tr:last-child td{border-bottom:0}
+tfoot td{font-weight:700;border-top:2px solid var(--line);border-bottom:0}
+.hname{font-weight:600}
+.city{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.bars{display:grid;gap:3px;width:120px}
+.bar{height:6px;border-radius:3px}
+.bar.r{background:var(--rev)} .bar.c{background:var(--cost)}
+.net.gain{color:var(--gain)} .net.loss{color:var(--loss)}
+.check{font-size:12px;color:var(--muted)}
+.check.ok::before{content:"✓ ";color:var(--gain)}
+
+.total{background:var(--bg);font-weight:700}
+.note{font-size:13px;color:var(--muted);margin:0}
+
+@media (max-width:560px){
+  .row-head,.country>button,.total{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr) 18px;gap:8px;padding-left:14px;padding-right:14px}
+  .cname{font-size:15px} .code{display:none}
+  .num{font-size:13px}
+  .detail{padding-left:12px;padding-right:12px}
+}
+@media (prefers-reduced-motion:reduce){.chev{transition:none}}
+
+/* Monthly revenue */
+.revbtn{background:none;border:0;padding:2px 4px;margin:-2px -4px;font:inherit;color:var(--rev);cursor:pointer;border-radius:4px;text-decoration:underline dotted;text-underline-offset:3px}
+.revbtn:hover{background:var(--accent-soft)}
+.revbtn:focus-visible,.monthbtn:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.revbtn[aria-expanded="true"]{background:var(--accent);color:var(--surface);text-decoration:none}
+.monthbtn{font:inherit;font-size:13px;background:var(--surface);border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:4px 12px;cursor:pointer;font-weight:600}
+.monthbtn[aria-expanded="true"]{background:var(--accent);color:var(--surface)}
+.months-row td{background:var(--bg);padding:12px 14px 14px}
+.mlabel{font-size:12px;color:var(--muted);margin-bottom:8px}
+.months{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px}
+.m{display:grid;gap:4px;justify-items:center;min-width:0}
+.m .col{width:100%;height:44px;display:flex;align-items:flex-end}
+.m .col i{display:block;width:100%;background:var(--rev);border-radius:3px 3px 0 0;opacity:.85}
+.m .mn{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.m .mv{font-family:var(--f-num);font-size:12px;font-variant-numeric:tabular-nums}
+.country-months{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px}
+@media (max-width:700px){.months{grid-template-columns:repeat(6,minmax(0,1fr));row-gap:12px}}

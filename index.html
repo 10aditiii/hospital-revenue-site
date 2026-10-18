@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Network Revenue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Draft · Company revenue by country</div>
+    <h1>Hospital Network Revenue</h1>
+    <p class="sub">Revenue and cost for each country. Select a country to see its hospitals. Click a revenue amount to see it month by month.</p>
+    <div class="legend"><span><i class="sw" style="background:var(--rev)"></i>Revenue</span><span><i class="sw" style="background:var(--cost)"></i>Cost</span></div>
+  </header>
+
+  <section class="ledger" aria-label="Countries">
+    <div class="row-head"><span>Country</span><span class="num">Revenue</span><span class="num">Cost</span><span></span></div>
+    <div id="rows"></div>
+    <div class="total" id="total"></div>
+  </section>
+
+  <p class="note">Country totals come from the draft sheet. Hospital names, per-hospital amounts and monthly figures are placeholders.</p>
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
